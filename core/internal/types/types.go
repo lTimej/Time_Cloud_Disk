@@ -16,3 +16,15 @@ type Response struct {
 type MailCodeSendRequest struct {
 	Email string `json:"email"`
 }
+
+type UserLoginRequest struct {
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
+type UserLoginResponse struct {
+	Token        string `json:"token"`
+	RefreshToken string `json:"refresh_token"`
+	Info         string `json:"info"`
+	Code         int    `json:"code"`
+}

@@ -22,6 +22,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/mail/code/send/register",
 				Handler: MailCodeSendRegisterHandler(serverCtx),
 			},
-		},
+			{
+				Method:  http.MethodPost,
+				Path:    "/user/login",
+				Handler: UserLoginHandler(serverCtx),
+			},
+		}, )
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+
+			}...,
+		),
 	)
 }
