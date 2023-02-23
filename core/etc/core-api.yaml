@@ -1,3 +1,18 @@
 Name: core-api
 Host: 0.0.0.0
 Port: 8888
+
+Mysql:
+  DataSource: root:liujun@tcp(127.0.0.1:3308)/cloud_disk?charset=utf8mb4&parseTime=True&loc=Local
+
+Redis:
+  Addr: "127.0.0.1:6380"
+  Password: "liujun"
+  DB: 0
+
+Email:
+  EmailAddr: "smtp.qq.com"
+  EmailPort: 25
+  EmailUser: "643163569@qq.com"
+  EmailPassword: "qhwagicfersobdbb"
+  Token: "qhwagicfersobdbb"
