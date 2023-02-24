@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"path"
 	"log"
+	"errors"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"liujun/Time_Cloud_Disk/core/internal/logic"
 	"liujun/Time_Cloud_Disk/core/internal/svc"
@@ -24,6 +25,24 @@ func FileUploadHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		file, fileHeader, err := r.FormFile("file")
 		if err != nil {
 			log.Println(11111,err)
+			httpx.Error(w, err)
+			return
+		}
+		//判断用户存储容量是否超出
+		user_identity := r.Header.Get("UserIdentity")
+		user_basic := new(models.UserBasic)
+		_,err = svcCtx.DB.Where("identity = ?",user_identity).Select("id,now_volume,total_volume").Get(user_basic)
+		if err != nil {
+			httpx.Error(w, err)
+			return
+		}
+		if fileHeader.Size + user_basic.NowVolume > user_basic.TotalVolume{
+			httpx.Error(w, errors.New("已超出最大容量"))
+			return
+		}
+		sql := "update user_basic set now_volume = ? where id = ?"
+		_,err = svcCtx.DB.Exec(sql,fileHeader.Size + user_basic.NowVolume,user_basic.Id)
+		if err != nil {
 			httpx.Error(w, err)
 			return
 		}

@@ -18,6 +18,8 @@ service core-api {
 	get /user/file/list(UserFileListRequest) returns(UserFileListResponse)
 	@handler FileUpload
 	post /user/file/upload(FileUploadRequest) returns(FileUploadResponse)
+	@handler UserRepositorySave
+	
 	
 }
 
@@ -92,4 +94,15 @@ type FileUploadResponse {
 	Identity string `json:"identity"`
 	Ext      string `json:"ext"`
 	Name     string `json:"name"`
+}
+
+type UserRepositorySaveRequest {
+	ParentId           int64  `json:"parentId"`
+	RepositoryIdentity string `json:"repository_identity"`
+	Ext                string `json:"ext"`
+	Name               string `json:"name"`
+}
+
+type UserRepositorySaveResponse {
+	Response
 }

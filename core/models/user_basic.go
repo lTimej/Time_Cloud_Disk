@@ -8,8 +8,8 @@ type UserBasic struct {
 	Name        string
 	Password    string
 	Email       string
-	// NowVolume   int64     `xorm:"now_volume"`
-	// TotalVolume int64     `xorm:"total_volume"`
+	NowVolume   int64     `xorm:"now_volume"`
+	TotalVolume int64     `xorm:"total_volume"`
 	CreatedAt   time.Time `xorm:"created"`
 	UpdatedAt   time.Time `xorm:"updated"`
 	DeletedAt   time.Time `xorm:"deleted"`
