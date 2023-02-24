@@ -1,3 +1,26 @@
+service core-api {
+	@handler UserRegister
+	post /user/register(UserRegisterRequest) returns (Response)
+	@handler MailCodeSendRegister
+	post /mail/code/send/register(MailCodeSendRequest)returns(Response)
+	@handler UserLogin
+	post /user/login(UserLoginRequest)returns(UserLoginResponse)
+}
+
+@server (
+	middleware: Auth
+)
+
+service core-api {
+	@handler UserDetail
+	get /user/detail(UserDetailRequest) returns (UserDetailResponse)
+	@handler UserFileList
+	get /user/file/list(UserFileListRequest) returns(UserFileListResponse)
+	@handler FileUpload
+	post /user/file/upload(FileUploadRequest) returns(FileUploadResponse)
+	
+}
+
 type UserRegisterRequest {
 	Name     string `json:"name"`
 	Password string `json:"password"`
@@ -24,14 +47,49 @@ type UserLoginResponse {
 	Info         string `json:"info"`
 	Code         int    `json:"code"`
 }
-@server (
-	middleware: Auth
-)
-service core-api {
-	@handler UserRegister
-	post /user/register(UserRegisterRequest) returns (Response)
-	@handler MailCodeSendRegister
-	post /mail/code/send/register(MailCodeSendRequest)returns(Response)
-	@handler UserLogin
-	post /user/login(UserLoginRequest)returns(UserLoginResponse)
+
+type UserDetailRequest {
+	Identity string `json:"identity,optional"`
+}
+
+type UserDetailResponse {
+	Response
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type UserFile {
+	Id                 int    `json:"id"`
+	Identity           string `json:"identity"`
+	RepositoryIdentity string `json:"repository_identity"`
+	Name               string `json:"name"`
+	Ext                string `json:"ext"`
+	Path               string `json:"path"`
+	Size               int    `json:"size"`
+}
+
+type UserFileListRequest {
+	Identity string `json:"identity,optional"`
+	Page     int    `json:"page"`
+	PageSize int    `json:"page_size"`
+}
+
+type UserFileListResponse {
+	FileList []*UserFile `json:"file_list"`
+	Count    int         `json:"count"`
+}
+
+type FileUploadRequest {
+	Hash string `json:"hash,optional"`
+	Name string `json:"name,optional"`
+	Ext  string `json:"ext,optional"`
+	Size int64  `json:"size,optional"`
+	Path string `json:"path,optional"`
+}
+
+type FileUploadResponse {
+	Response
+	Identity string `json:"identity"`
+	Ext      string `json:"ext"`
+	Name     string `json:"name"`
 }

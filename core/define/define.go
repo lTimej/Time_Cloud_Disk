@@ -21,3 +21,8 @@ type TokenClaim struct {
 	Name     string
 	jwt.RegisteredClaims
 }
+// MinIOAccessKeyID MinIO 配置
+var MinIOAccessKeyID = "WHPITDVZRR317H7TTGBN"
+var MinIOAccessSecretKey = "mDphi8CpUVHkZ4noRY9fTx5GawtXaRs9o1elfWfa"
+var MinIOEndpoint = "192.168.70.129:9000"
+var MinIOBucket = "cloud-disk"

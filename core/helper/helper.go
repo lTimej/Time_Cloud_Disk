@@ -4,34 +4,23 @@ import (
 	"errors"
 	"github.com/golang-jwt/jwt/v4"
 	"gopkg.in/gomail.v2"
-	//"github.com/jordan-wright/email"
-	// "crypto/tls"
 	"liujun/Time_Cloud_Disk/core/define"
-	// "fmt"
 	"math/rand"
-	// "net/smtp"
 	"crypto/md5"
+	"context"
+	"net/http"
 	"encoding/hex"
 	uuid "github.com/satori/go.uuid"
 	"time"
+	"path"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 )
 
 func SendEmail(to_Email string, code string) error {
 	email_addr := "smtp.qq.com"
 	email_user := "643163569@qq.com"
 	email_port := 25
-	// e := email.NewEmail()
-	// e.From = fmt.Sprintf("Get %s",email_user)
-	// e.To = []string{to_Email}
-	// e.Subject = "验证码发送测试"
-	// e.HTML = []byte("您的验证码为：<h1>" + code + "</h1>")
-	// addr := fmt.Sprintf("%s:%d",email_addr,email_port)
-	// err := e.SendWithTLS(addr, smtp.PlainAuth("", email_user, define.EmailPassword, email_addr),
-	// 	&tls.Config{InsecureSkipVerify: true, ServerName: email_addr})
-	// if err != nil {
-	// 	return err
-	// }
-	// return nil
 	m := gomail.NewMessage()
 	m.SetHeader("From", email_user)
 	m.SetHeader("To", to_Email)
@@ -90,4 +79,44 @@ func VerifyToken(token_str string) (*define.TokenClaim, error) {
 		return tc, nil
 	}
 	return nil, errors.New("非法token")
+}
+
+
+func MinIOUpload(r *http.Request)(string,error) {
+	ctx := context.Background()
+	// Initialize minio client object.
+	minioClient, err := minio.New(define.MinIOEndpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(define.MinIOAccessKeyID, define.MinIOAccessSecretKey, ""),
+	})
+	if err != nil {
+		return "",err
+	}
+	// Make a new bucket called mymusic.
+	// bucketName := "mymusic"
+	// location := "us-east-1"
+
+	// err = minioClient.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{Region: location})
+	// if err != nil {
+	// 	// Check to see if we already own this bucket (which happens if you run this twice)
+	// 	exists, errBucketExists := minioClient.BucketExists(ctx, bucketName)
+	// 	if errBucketExists == nil && exists {
+	// 		log.Printf("We already own %s\n", bucketName)
+	// 	} else {
+	// 		log.Fatalln(err)
+	// 	}
+	// } else {
+	// 	log.Printf("Successfully created %s\n", bucketName)
+	// }
+
+	// Upload the zip file
+	file,fileHandler,err := r.FormFile("file")
+	objectName := UUID() + path.Ext(fileHandler.Filename)
+	contentType := "binary/octet-stream"
+	// Upload the zip file with FPutObject
+	_, err = minioClient.PutObject(ctx, define.MinIOBucket, objectName, file, fileHandler.Size,minio.PutObjectOptions{ContentType: contentType})
+	if err != nil {
+		return "",err
+	}
+
+	return define.MinIOBucket + "/" + objectName,nil
 }

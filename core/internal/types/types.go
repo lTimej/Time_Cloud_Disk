@@ -28,3 +28,49 @@ type UserLoginResponse struct {
 	Info         string `json:"info"`
 	Code         int    `json:"code"`
 }
+
+type UserDetailRequest struct {
+	Identity string `json:"identity,optional"`
+}
+
+type UserDetailResponse struct {
+	Response
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type UserFile struct {
+	Id                 int    `json:"id"`
+	Identity           string `json:"identity"`
+	RepositoryIdentity string `json:"repository_identity"`
+	Name               string `json:"name"`
+	Ext                string `json:"ext"`
+	Path               string `json:"path"`
+	Size               int    `json:"size"`
+}
+
+type UserFileListRequest struct {
+	Identity string `json:"identity,optional"`
+	Page     int    `json:"page"`
+	PageSize int    `json:"page_size"`
+}
+
+type UserFileListResponse struct {
+	FileList []*UserFile `json:"file_list"`
+	Count    int         `json:"count"`
+}
+
+type FileUploadRequest struct {
+	Hash string `json:"hash,optional"`
+	Name string `json:"name,optional"`
+	Ext  string `json:"ext,optional"`
+	Size int64  `json:"size,optional"`
+	Path string `json:"path,optional"`
+}
+
+type FileUploadResponse struct {
+	Response
+	Identity string `json:"identity"`
+	Ext      string `json:"ext"`
+	Name     string `json:"name"`
+}

@@ -30,7 +30,6 @@ func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		r.Header.Set("UserId", string(rune(token_claim.Id)))
 		r.Header.Set("UserIdentity", token_claim.Identity)
 		r.Header.Set("UserName", token_claim.Name)
-		next(w, r)
 		// Passthrough to next handler if need
 		next(w, r)
 	}
