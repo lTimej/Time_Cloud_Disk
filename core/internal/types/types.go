@@ -51,8 +51,8 @@ type UserFile struct {
 
 type UserFileListRequest struct {
 	Identity string `json:"identity,optional"`
-	Page     int    `json:"page,optional"`
-	PageSize int    `json:"page_size,optional"`
+	Page     int    `json:"page"`
+	PageSize int    `json:"page_size"`
 }
 
 type UserFileListResponse struct {
@@ -84,5 +84,55 @@ type UserRepositorySaveRequest struct {
 }
 
 type UserRepositorySaveResponse struct {
+	Response
+}
+
+type UserFolderListRequest struct {
+	Identity string `json:"identity,optional"`
+}
+
+type UserFolderListResponse struct {
+	Response
+	List []*UserFolder `json:"list"`
+}
+
+type UserFolder struct {
+	Identity string `json:"identity"`
+	Name     string `json:"name"`
+}
+
+type UserFileNameUpdateRequest struct {
+	Identity string `json:"identity"`
+	Name     string `json:"name"`
+}
+
+type UserFileNameUpdateResponse struct {
+	Response
+}
+
+type UserFolderCreateRequest struct {
+	ParentId int64  `json:"parent_id"`
+	Name     string `json:"name"`
+}
+
+type UserFolderCreateResponse struct {
+	Response
+	Identity string `json:"identity"`
+}
+
+type UserFileDeleteRequest struct {
+	Identity string `json:"identity"`
+}
+
+type UserFileDeleteResponse struct {
+	Response
+}
+
+type UserFileMoveRequest struct {
+	Idnetity       string `json:"identity"`
+	ParentIdnetity string `json:"parent_identity"`
+}
+
+type UserFileMoveResponse struct {
 	Response
 }

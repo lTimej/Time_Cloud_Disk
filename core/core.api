@@ -20,7 +20,16 @@ service core-api {
 	post /user/file/upload(FileUploadRequest) returns(FileUploadResponse)
 	@handler UserRepositorySave
 	post /user/repository/save(UserRepositorySaveRequest) returns(UserRepositorySaveResponse)
-	
+	@handler UserFolderList
+	get /user/folder/list(UserFolderListRequest) returns(UserFolderListResponse)
+	@handler UserFileNameUpdate
+	post /user/file/name/update(UserFileNameUpdateRequest) returns(UserFileNameUpdateResponse)
+	@handler UserCreateFolder
+	post /user/create/folder(UserFolderCreateRequest) returns(UserFolderCreateResponse)
+	@handler UserFileDelete
+	delete /user/file/delete(UserFileDeleteRequest) returns(UserFileDeleteResponse)
+	@handler UserFileMove
+	put /user/file/move(UserFileMoveRequest) returns (UserFileMoveResponse)
 }
 
 type UserRegisterRequest {
@@ -105,5 +114,55 @@ type UserRepositorySaveRequest {
 }
 
 type UserRepositorySaveResponse {
+	Response
+}
+
+type UserFolderListRequest {
+	Identity string `json:"identity,optional"`
+}
+
+type UserFolderListResponse {
+	Response
+	List []*UserFolder `json:"list"`
+}
+
+type UserFolder {
+	Identity string `json:"identity"`
+	Name     string `json:"name"`
+}
+
+type UserFileNameUpdateRequest {
+	Identity string `json:"identity"`
+	Name     string `json:"name"`
+}
+
+type UserFileNameUpdateResponse {
+	Response
+}
+
+type UserFolderCreateRequest {
+	ParentId int64  `json:"parent_id"`
+	Name     string `json:"name"`
+}
+
+type UserFolderCreateResponse {
+	Response
+	Identity string `json:"identity"`
+}
+
+type UserFileDeleteRequest {
+	Identity string `json:"identity"`
+}
+
+type UserFileDeleteResponse {
+	Response
+}
+
+type UserFileMoveRequest {
+	Idnetity       string `json:"identity"`
+	ParentIdnetity string `json:"parent_identity"`
+}
+
+type UserFileMoveResponse {
 	Response
 }
