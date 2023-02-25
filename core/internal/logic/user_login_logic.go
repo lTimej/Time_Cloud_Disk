@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"liujun/Time_Cloud_Disk/core/helper"
 	"liujun/Time_Cloud_Disk/core/models"
 	"time"
@@ -34,6 +35,7 @@ func (l *UserLoginLogic) UserLogin(req *types.UserLoginRequest) (resp *types.Use
 	resp = new(types.UserLoginResponse)
 	ok, err := l.svcCtx.DB.Where("name= ? AND password = ?", username, helper.MD5(password)).Get(user)
 	if err != nil {
+		fmt.Println(err, 1111)
 		resp.Code = 1
 		resp.Info = "数据库出错"
 		return resp, nil

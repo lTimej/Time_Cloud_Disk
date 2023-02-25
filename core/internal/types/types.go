@@ -51,11 +51,12 @@ type UserFile struct {
 
 type UserFileListRequest struct {
 	Identity string `json:"identity,optional"`
-	Page     int    `json:"page"`
-	PageSize int    `json:"page_size"`
+	Page     int    `json:"page,optional"`
+	PageSize int    `json:"page_size,optional"`
 }
 
 type UserFileListResponse struct {
+	Response
 	FileList []*UserFile `json:"file_list"`
 	Count    int         `json:"count"`
 }
@@ -73,4 +74,15 @@ type FileUploadResponse struct {
 	Identity string `json:"identity"`
 	Ext      string `json:"ext"`
 	Name     string `json:"name"`
+}
+
+type UserRepositorySaveRequest struct {
+	ParentId           int64  `json:"parentId"`
+	RepositoryIdentity string `json:"repository_identity"`
+	Ext                string `json:"ext"`
+	Name               string `json:"name"`
+}
+
+type UserRepositorySaveResponse struct {
+	Response
 }

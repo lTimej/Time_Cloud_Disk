@@ -19,7 +19,7 @@ service core-api {
 	@handler FileUpload
 	post /user/file/upload(FileUploadRequest) returns(FileUploadResponse)
 	@handler UserRepositorySave
-	
+	post /user/repository/save(UserRepositorySaveRequest) returns(UserRepositorySaveResponse)
 	
 }
 
@@ -77,6 +77,7 @@ type UserFileListRequest {
 }
 
 type UserFileListResponse {
+	Response
 	FileList []*UserFile `json:"file_list"`
 	Count    int         `json:"count"`
 }
